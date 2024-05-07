@@ -18,6 +18,7 @@ brown = (201,100,59)
 
 dis_width = 1000
 dis_height = 800
+pos = 'up'
 
 dis = pygame.display.set_mode((dis_width, dis_height))
 pygame.display.set_caption('Змейка')
@@ -28,7 +29,10 @@ snake_block = 10
 snake_speed_0 = 15
 
 # Загрузка текстуры
-texture = pygame.image.load('face_test_1.png')
+texture_up = pygame.image.load('face_test_up.png')
+texture_down = pygame.image.load('face_test_down.png')
+texture_right = pygame.image.load('face_test_right.png')
+texture_left = pygame.image.load('face_test_left.png')
 
 font_style = pygame.font.SysFont("bahnschrift", 25)
 score_font = pygame.font.SysFont("comicsansms", 35)
@@ -65,14 +69,27 @@ def Your_score(score):
     dis.blit(value, [0, 0])
 
 
-def our_snake(snake_block, snake_list):
+def our_snake(snake_block, snake_list, position):
     b = 0
     for x in snake_list:
         rect = pygame.draw.rect(dis, green, [x[0], x[1], snake_block, snake_block])
         if b == (len(snake_list)-1):
-            for z in range(rect.left, rect.right, texture.get_width()):
-                for y in range(rect.top, rect.bottom, texture.get_height()):
-                    dis.blit(texture, (z, y))
+            if position == 'up':
+                for z in range(rect.left, rect.right, texture_up.get_width()):
+                    for y in range(rect.top, rect.bottom, texture_up.get_height()):
+                        dis.blit(texture_up, (z, y))
+            elif position == 'down':
+                for z in range(rect.left, rect.right, texture_down.get_width()):
+                    for y in range(rect.top, rect.bottom, texture_down.get_height()):
+                        dis.blit(texture_down, (z, y))
+            elif position == 'right':
+                for z in range(rect.left, rect.right, texture_right.get_width()):
+                    for y in range(rect.top, rect.bottom, texture_right.get_height()):
+                        dis.blit(texture_right, (z, y))
+            elif position == 'left':
+                for z in range(rect.left, rect.right, texture_left.get_width()):
+                    for y in range(rect.top, rect.bottom, texture_left.get_height()):
+                        dis.blit(texture_left, (z, y))
         b += 1
 
 
@@ -81,7 +98,7 @@ def message(msg, color):
     dis.blit(mesg, [dis_width / 6, dis_height / 3])
 
 
-def gameLoop(before_r_l, before_up_down, snake_speed, This_time, check_update):
+def gameLoop(before_r_l, before_up_down, snake_speed, This_time, check_update, pos):
     game_over = False
     game_close = False
 
@@ -117,31 +134,35 @@ def gameLoop(before_r_l, before_up_down, snake_speed, This_time, check_update):
                         game_over = True
                         game_close = False
                     if event.key == pygame.K_c:
-                        gameLoop(0, 0, 10, time.time(), True)
+                        gameLoop(0, 0, 10, time.time(), True, 'up')
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 game_over = True
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_LEFT and before_r_l != 1 and time.time() - This_time >= 0.01:
+                    pos = 'left'
                     before_up_down = 0
                     x1_change = -snake_block
                     y1_change = 0
                     before_r_l = 1
                     This_time = time.time()
                 elif event.key == pygame.K_RIGHT and before_r_l != 1 and time.time() - This_time >= 0.01:
+                    pos = 'right'
                     before_up_down = 0
                     x1_change = snake_block
                     y1_change = 0
                     before_r_l = 1
                     This_time = time.time()
                 elif event.key == pygame.K_UP and before_up_down == 0 and time.time() - This_time >= 0.01:
+                    pos = 'up'
                     before_up_down = 1
                     y1_change = -snake_block
                     x1_change = 0
                     before_r_l = 0
                     This_time = time.time()
                 elif event.key == pygame.K_DOWN and before_up_down == 0 and time.time() - This_time >= 0.01:
+                    pos = 'down'
                     before_up_down = 1
                     y1_change = snake_block
                     x1_change = 0
@@ -197,7 +218,8 @@ def gameLoop(before_r_l, before_up_down, snake_speed, This_time, check_update):
             if x == snake_Head:
                 game_close = True
 
-        our_snake(snake_block, snake_List)
+        our_snake(snake_block, snake_List, pos)
+
         Your_score(Length_of_snake - 1)
         pygame.display.update()
 
@@ -223,4 +245,4 @@ def gameLoop(before_r_l, before_up_down, snake_speed, This_time, check_update):
     pygame.quit()
     quit()
 
-gameLoop(0, 0, snake_speed_0, 0, True)
+gameLoop(0, 0, snake_speed_0, 0, True, 'up')
