@@ -11,7 +11,7 @@ pygame.init()
 white = (255, 255, 255)
 yellow = (255, 255, 102)
 black = (0, 0, 0)
-red = (213, 50, 80)
+red = (255, 30, 30)
 green = (0, 255, 0)
 blue = (50, 153, 213)
 brown = (201,100,59)
@@ -66,14 +66,14 @@ def Your_score(score):
 
 
 def our_snake(snake_block, snake_list):
+    b = 0
     for x in snake_list:
-        b = 0
-        rect = pygame.draw.rect(dis, black, [x[0], x[1], snake_block, snake_block])
-        if b == 0:
-            b += 1
+        rect = pygame.draw.rect(dis, green, [x[0], x[1], snake_block, snake_block])
+        if b == (len(snake_list)-1):
             for z in range(rect.left, rect.right, texture.get_width()):
                 for y in range(rect.top, rect.bottom, texture.get_height()):
                     dis.blit(texture, (z, y))
+        b += 1
 
 
 def message(msg, color):
@@ -167,7 +167,7 @@ def gameLoop(before_r_l, before_up_down, snake_speed, This_time, check_update):
         coord_rect_1 = [250, 0, 15, 65]
         pygame.draw.rect(dis, brown, [coord_rect_1[0], coord_rect_1[1], coord_rect_1[2], coord_rect_1[3]])
 
-        pygame.draw.rect(dis, green, [foodx, foody, snake_block, snake_block])
+        pygame.draw.rect(dis, red, [foodx, foody, snake_block, snake_block])
 
         snake_Head = []
         snake_Head.append(x1)
