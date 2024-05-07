@@ -27,6 +27,9 @@ clock = pygame.time.Clock()
 snake_block = 10
 snake_speed_0 = 15
 
+# Загрузка текстуры
+texture = pygame.image.load('face_test_1.png')
+
 font_style = pygame.font.SysFont("bahnschrift", 25)
 score_font = pygame.font.SysFont("comicsansms", 35)
 
@@ -64,7 +67,13 @@ def Your_score(score):
 
 def our_snake(snake_block, snake_list):
     for x in snake_list:
-        pygame.draw.rect(dis, black, [x[0], x[1], snake_block, snake_block])
+        b = 0
+        rect = pygame.draw.rect(dis, black, [x[0], x[1], snake_block, snake_block])
+        if b == 0:
+            b += 1
+            for z in range(rect.left, rect.right, texture.get_width()):
+                for y in range(rect.top, rect.bottom, texture.get_height()):
+                    dis.blit(texture, (z, y))
 
 
 def message(msg, color):
@@ -152,10 +161,14 @@ def gameLoop(before_r_l, before_up_down, snake_speed, This_time, check_update):
         y1 += y1_change
         dis.fill(blue)
 
-        coord_rect = [300, 500, 200, 20]
+        coord_rect = [0, 50, 250, 15]
         pygame.draw.rect(dis, brown, [coord_rect[0], coord_rect[1], coord_rect[2], coord_rect[3]])
 
+        coord_rect_1 = [250, 0, 15, 65]
+        pygame.draw.rect(dis, brown, [coord_rect_1[0], coord_rect_1[1], coord_rect_1[2], coord_rect_1[3]])
+
         pygame.draw.rect(dis, green, [foodx, foody, snake_block, snake_block])
+
         snake_Head = []
         snake_Head.append(x1)
         snake_Head.append(y1)
@@ -166,6 +179,13 @@ def gameLoop(before_r_l, before_up_down, snake_speed, This_time, check_update):
             list_cord_game_over_x.append(i)
 
         for o in range (int(coord_rect[1]), int(coord_rect[1]) + int(coord_rect[3])):
+            list_cord_game_over_y.append(o)
+
+        #второе препятствие:
+        for i in range (int(coord_rect_1[0]), int(coord_rect_1[0]) + int(coord_rect_1[2])):
+            list_cord_game_over_x.append(i)
+
+        for o in range (int(coord_rect_1[1]), int(coord_rect_1[1]) + int(coord_rect_1[3])):
             list_cord_game_over_y.append(o)
 
         if x1 in list_cord_game_over_x and y1 in list_cord_game_over_y:
