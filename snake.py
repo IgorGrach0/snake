@@ -34,6 +34,8 @@ texture_down = pygame.image.load('face_test_down.png')
 texture_right = pygame.image.load('face_test_right.png')
 texture_left = pygame.image.load('face_test_left.png')
 
+linux_logo = pygame.image.load('Linux_Logo.png')
+
 font_style = pygame.font.SysFont("bahnschrift", 25)
 score_font = pygame.font.SysFont("comicsansms", 35)
 
@@ -188,7 +190,14 @@ def gameLoop(before_r_l, before_up_down, snake_speed, This_time, check_update, p
         coord_rect_1 = [250, 0, 15, 65]
         pygame.draw.rect(dis, brown, [coord_rect_1[0], coord_rect_1[1], coord_rect_1[2], coord_rect_1[3]])
 
+        coord_rect_2 = [450, 300, 250, 250]
+        rect_1 = pygame.draw.rect(dis, blue, [coord_rect_2[0], coord_rect_2[1], coord_rect_2[2], coord_rect_2[3]])
+        for z in range(rect_1.left, rect_1.right, linux_logo.get_width()):
+            for y in range(rect_1.top, rect_1.bottom, linux_logo.get_height()):
+                dis.blit(linux_logo, (z, y))
+
         pygame.draw.rect(dis, red, [foodx, foody, snake_block, snake_block])
+
 
         snake_Head = []
         snake_Head.append(x1)
@@ -238,8 +247,8 @@ def gameLoop(before_r_l, before_up_down, snake_speed, This_time, check_update, p
                 foodx = round(random.randrange(0, dis_width - snake_block) / 10.0) * 10.0
                 foody = round(random.randrange(0, dis_height - snake_block) / 10.0) * 10.0
 
-            Length_of_snake += 10
-            snake_speed += 1
+            Length_of_snake += 1
+            snake_speed += 0.5
 
         clock.tick(snake_speed)
     pygame.quit()
