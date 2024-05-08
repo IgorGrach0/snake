@@ -142,28 +142,28 @@ def gameLoop(before_r_l, before_up_down, snake_speed, This_time, check_update, p
             if event.type == pygame.QUIT:
                 game_over = True
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_LEFT and before_r_l != 1 and time.time() - This_time >= 0.01:
+                if event.key == pygame.K_LEFT and before_r_l != 1 and time.time() - This_time >= 0.005:
                     pos = 'left'
                     before_up_down = 0
                     x1_change = -snake_block
                     y1_change = 0
                     before_r_l = 1
                     This_time = time.time()
-                elif event.key == pygame.K_RIGHT and before_r_l != 1 and time.time() - This_time >= 0.01:
+                elif event.key == pygame.K_RIGHT and before_r_l != 1 and time.time() - This_time >= 0.005:
                     pos = 'right'
                     before_up_down = 0
                     x1_change = snake_block
                     y1_change = 0
                     before_r_l = 1
                     This_time = time.time()
-                elif event.key == pygame.K_UP and before_up_down == 0 and time.time() - This_time >= 0.01:
+                elif event.key == pygame.K_UP and before_up_down == 0 and time.time() - This_time >= 0.005:
                     pos = 'up'
                     before_up_down = 1
                     y1_change = -snake_block
                     x1_change = 0
                     before_r_l = 0
                     This_time = time.time()
-                elif event.key == pygame.K_DOWN and before_up_down == 0 and time.time() - This_time >= 0.01:
+                elif event.key == pygame.K_DOWN and before_up_down == 0 and time.time() - This_time >= 0.005:
                     pos = 'down'
                     before_up_down = 1
                     y1_change = snake_block
@@ -171,19 +171,20 @@ def gameLoop(before_r_l, before_up_down, snake_speed, This_time, check_update, p
                     before_r_l = 0
                     This_time = time.time()
 
-        if x1 >= dis_width:
+        if x1 >= dis_width+1:
             x1 = 0
-        elif x1 <= 0:
+        elif x1 < 0:
             x1 = dis_width
-        elif y1 <= 0:
+        elif y1 < 0:
             y1 = dis_height
-        elif y1 >= dis_height:
+        elif y1 >= dis_height+1:
             y1 = 0
 
         x1 += x1_change
         y1 += y1_change
         dis.fill(blue)
 
+        #прямоугольники (препятствия и графика)
         coord_rect = [0, 50, 250, 15]
         pygame.draw.rect(dis, brown, [coord_rect[0], coord_rect[1], coord_rect[2], coord_rect[3]])
 
@@ -195,6 +196,18 @@ def gameLoop(before_r_l, before_up_down, snake_speed, This_time, check_update, p
         for z in range(rect_1.left, rect_1.right, linux_logo.get_width()):
             for y in range(rect_1.top, rect_1.bottom, linux_logo.get_height()):
                 dis.blit(linux_logo, (z, y))
+
+        coord_rect_3 = [790, 280, 15, 320]
+        pygame.draw.rect(dis, brown, [coord_rect_3[0], coord_rect_3[1], coord_rect_3[2], coord_rect_3[3]])
+
+        coord_rect_4 = [700, 600, 105, 15]
+        pygame.draw.rect(dis, brown, [coord_rect_4[0], coord_rect_4[1], coord_rect_4[2], coord_rect_4[3]])
+
+        coord_rect_5 = [700, 600, 15, 300]
+        pygame.draw.rect(dis, brown, [coord_rect_5[0], coord_rect_5[1], coord_rect_5[2], coord_rect_5[3]])
+
+        coord_rect_6 = [790, 270, 300, 15]
+        pygame.draw.rect(dis, brown, [coord_rect_6[0], coord_rect_6[1], coord_rect_6[2], coord_rect_6[3]])
 
         pygame.draw.rect(dis, red, [foodx, foody, snake_block, snake_block])
 
@@ -218,7 +231,42 @@ def gameLoop(before_r_l, before_up_down, snake_speed, This_time, check_update, p
         for o in range (int(coord_rect_1[1]), int(coord_rect_1[1]) + int(coord_rect_1[3])):
             list_cord_game_over_y.append(o)
 
-        if x1 in list_cord_game_over_x and y1 in list_cord_game_over_y:
+        #3
+        obstacles_3_x = []
+        obstacles_3_y = []
+        for i in range (int(coord_rect_3[0]), int(coord_rect_3[0]) + int(coord_rect_3[2])):
+            obstacles_3_x.append(i)
+
+        for o in range (int(coord_rect_3[1]), int(coord_rect_3[1]) + int(coord_rect_3[3])):
+            obstacles_3_y.append(o)
+
+        #4
+        obstacles_4_x = []
+        obstacles_4_y = []
+        for i in range (int(coord_rect_4[0]), int(coord_rect_4[0]) + int(coord_rect_4[2])):
+            obstacles_4_x.append(i)
+
+        for o in range (int(coord_rect_4[1]), int(coord_rect_4[1]) + int(coord_rect_4[3])):
+            obstacles_4_y.append(o)
+
+        obstacles_5_x = []
+        obstacles_5_y = []
+        for i in range(int(coord_rect_5[0]), int(coord_rect_5[0]) + int(coord_rect_5[2])):
+            obstacles_5_x.append(i)
+
+        for o in range(int(coord_rect_5[1]), int(coord_rect_5[1]) + int(coord_rect_5[3])):
+            obstacles_5_y.append(o)
+
+        obstacles_6_x = []
+        obstacles_6_y = []
+        for i in range(int(coord_rect_6[0]), int(coord_rect_6[0]) + int(coord_rect_6[2])):
+            obstacles_6_x.append(i)
+
+        for o in range(int(coord_rect_6[1]), int(coord_rect_6[1]) + int(coord_rect_6[3])):
+            obstacles_6_y.append(o)
+
+
+        if (x1 in list_cord_game_over_x and y1 in list_cord_game_over_y) or (x1 in obstacles_3_x and y1 in obstacles_3_y) or (x1 in obstacles_4_x and y1 in obstacles_4_y) or (x1 in obstacles_5_x and y1 in obstacles_5_y) or (x1 in obstacles_6_x and y1 in obstacles_6_y):
             game_close = True
         if len(snake_List) > Length_of_snake:
             del snake_List[0]
@@ -243,7 +291,7 @@ def gameLoop(before_r_l, before_up_down, snake_speed, This_time, check_update, p
         if x1 == foodx and y1 == foody:
             foodx = round(random.randrange(0, dis_width - snake_block) / 10.0) * 10.0
             foody = round(random.randrange(0, dis_height - snake_block) / 10.0) * 10.0
-            while (foodx in list_foodx and foody in list_foody) or (foodx in list_cord_game_over_x and foody in list_cord_game_over_y):
+            while (foodx in list_foodx and foody in list_foody) or (foodx in list_cord_game_over_x and foody in list_cord_game_over_y) or (foodx in obstacles_3_x and foody in obstacles_3_y) or (foodx in obstacles_4_x and foody in obstacles_4_y) or (foodx in obstacles_5_x and foody in obstacles_5_y) or (foodx in obstacles_6_x and foody in obstacles_6_y):
                 foodx = round(random.randrange(0, dis_width - snake_block) / 10.0) * 10.0
                 foody = round(random.randrange(0, dis_height - snake_block) / 10.0) * 10.0
 
