@@ -7,6 +7,7 @@ connection = sqlite3.connect('Max_result_database.db')
 cursor = connection.cursor()
 
 pygame.init()
+lvl = 1
 
 white = (255, 255, 255)
 yellow = (255, 255, 102)
@@ -68,7 +69,11 @@ def record_max_result(Length_of_snake):
 
 def Your_score(score):
     value = score_font.render("Your Score: " + str(score), True, yellow)
-    dis.blit(value, [0, 0])
+    dis.blit(value, [10, 0])
+
+def Your_level(level):
+    value = score_font.render("level: " + str(level), True, yellow)
+    dis.blit(value, [800, 3])
 
 
 def our_snake(snake_block, snake_list, position):
@@ -98,7 +103,8 @@ def our_snake(snake_block, snake_list, position):
 def message(msg, color):
     mesg = font_style.render(msg, True, color)
     dis.blit(mesg, [dis_width / 6, dis_height / 3])
-
+def main():
+    
 
 def gameLoop(before_r_l, before_up_down, snake_speed, This_time, check_update, pos):
     game_over = False
@@ -115,6 +121,7 @@ def gameLoop(before_r_l, before_up_down, snake_speed, This_time, check_update, p
 
     foodx = round(random.randrange(0, dis_width - snake_block - 40) / 10.0) * 10.0
     foody = round(random.randrange(0, dis_height - snake_block - 40) / 10.0) * 10.0
+
 
     while not game_over:
         while game_close == True:
@@ -209,6 +216,21 @@ def gameLoop(before_r_l, before_up_down, snake_speed, This_time, check_update, p
         coord_rect_6 = [790, 270, 300, 15]
         pygame.draw.rect(dis, brown, [coord_rect_6[0], coord_rect_6[1], coord_rect_6[2], coord_rect_6[3]])
 
+        coord_rect_7 = [0, 0, 250, 10]
+        pygame.draw.rect(dis, brown, [coord_rect_7[0], coord_rect_7[1], coord_rect_7[2], coord_rect_7[3]])
+
+        coord_rect_8 = [785, 0, 300, 10]
+        pygame.draw.rect(dis, brown, [coord_rect_8[0], coord_rect_8[1], coord_rect_8[2], coord_rect_8[3]])
+
+        coord_rect_9 = [785, 0, 10, 50]
+        pygame.draw.rect(dis, brown, [coord_rect_9[0], coord_rect_9[1], coord_rect_9[2], coord_rect_9[3]])
+
+        coord_rect_10 = [785, 50, 250, 10]
+        pygame.draw.rect(dis, brown, [coord_rect_10[0], coord_rect_10[1], coord_rect_10[2], coord_rect_10[3]])
+
+        coord_rect_11 = [785, 50, 250, 10]
+        pygame.draw.rect(dis, brown, [coord_rect_11[0], coord_rect_11[1], coord_rect_11[2], coord_rect_11[3]])
+
         pygame.draw.rect(dis, red, [foodx, foody, snake_block, snake_block])
 
 
@@ -266,7 +288,12 @@ def gameLoop(before_r_l, before_up_down, snake_speed, This_time, check_update, p
             obstacles_6_y.append(o)
 
 
-        if (x1 in list_cord_game_over_x and y1 in list_cord_game_over_y) or (x1 in obstacles_3_x and y1 in obstacles_3_y) or (x1 in obstacles_4_x and y1 in obstacles_4_y) or (x1 in obstacles_5_x and y1 in obstacles_5_y) or (x1 in obstacles_6_x and y1 in obstacles_6_y):
+        if (x1 in list_cord_game_over_x and y1 in list_cord_game_over_y) or (
+                x1 in obstacles_3_x and y1 in obstacles_3_y) or (
+                x1 in obstacles_4_x and y1 in obstacles_4_y) or (
+                x1 in obstacles_5_x and y1 in obstacles_5_y) or (
+                x1 in obstacles_6_x and y1 in obstacles_6_y) or (
+                x1 < 250 and y1 < 70) or (x1 > 775 and y1 < 60):
             game_close = True
         if len(snake_List) > Length_of_snake:
             del snake_List[0]
@@ -275,10 +302,12 @@ def gameLoop(before_r_l, before_up_down, snake_speed, This_time, check_update, p
             if x == snake_Head:
                 game_close = True
 
+
         our_snake(snake_block, snake_List, pos)
 
         Your_score(Length_of_snake - 1)
-        pygame.display.update()
+        Your_level(lvl)
+
 
         list_foodx = []
         for i in range(100):
@@ -291,12 +320,19 @@ def gameLoop(before_r_l, before_up_down, snake_speed, This_time, check_update, p
         if x1 == foodx and y1 == foody:
             foodx = round(random.randrange(0, dis_width - snake_block) / 10.0) * 10.0
             foody = round(random.randrange(0, dis_height - snake_block) / 10.0) * 10.0
-            while (foodx in list_foodx and foody in list_foody) or (foodx in list_cord_game_over_x and foody in list_cord_game_over_y) or (foodx in obstacles_3_x and foody in obstacles_3_y) or (foodx in obstacles_4_x and foody in obstacles_4_y) or (foodx in obstacles_5_x and foody in obstacles_5_y) or (foodx in obstacles_6_x and foody in obstacles_6_y):
-                foodx = round(random.randrange(0, dis_width - snake_block) / 10.0) * 10.0
-                foody = round(random.randrange(0, dis_height - snake_block) / 10.0) * 10.0
-
             Length_of_snake += 1
             snake_speed += 0.5
+
+        while (foodx in list_foodx and foody in list_foody) or (
+                foodx in list_cord_game_over_x and foody in list_cord_game_over_y) or (
+                foodx in obstacles_3_x and foody in obstacles_3_y) or (
+                foodx in obstacles_4_x and foody in obstacles_4_y) or (
+                foodx in obstacles_5_x and foody in obstacles_5_y) or (
+                foodx in obstacles_6_x and foody in obstacles_6_y) or (
+                foodx < 250 and foody < 65) or (foodx > 775 and foody < 60):
+            foodx = round(random.randrange(0, dis_width - snake_block) / 10.0) * 10.0
+            foody = round(random.randrange(0, dis_height - snake_block) / 10.0) * 10.0
+        pygame.display.update()
 
         clock.tick(snake_speed)
     pygame.quit()
