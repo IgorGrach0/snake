@@ -229,7 +229,7 @@ def first_level(before_r_l, before_up_down, snake_speed, This_time, check_update
             if event.type == pygame.QUIT:
                 game_over = True
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_n and (Length_of_snake - 1) >= 5:
+                if event.key == pygame.K_n and (Length_of_snake - 1) >= 30:
                     Second_level(0, 0, snake_speed_0, 0, True, 'up')
                 if event.key == pygame.K_LEFT and before_r_l != 1 and time.time() - This_time >= 0.005:
                     pos = 'left'
@@ -336,8 +336,8 @@ def first_level(before_r_l, before_up_down, snake_speed, This_time, check_update
 
         Your_score(Length_of_snake - 1)
         Your_level(lvl)
-        if (Length_of_snake - 1) >= 5:
-            value = enter_font.render("Click Enter and go next lelvel ", True, yellow)
+        if (Length_of_snake - 1) >= 30:
+            value = enter_font.render("Click 'N' and go next lelvel ", True, yellow)
             dis.blit(value, [330, 3])
 
         list_foodx = []
@@ -719,12 +719,10 @@ def Second_level(before_r_l, before_up_down, snake_speed, This_time, check_updat
             if x == snake_Head:
                 game_close = True
 
-
         our_snake(snake_block, snake_List, pos)
 
         Your_score(Length_of_snake - 1)
         Your_level(lvl)
-
 
         list_foodx = []
         for i in range(100):
@@ -755,4 +753,3 @@ def Second_level(before_r_l, before_up_down, snake_speed, This_time, check_updat
     pygame.quit()
     quit()
 main()
-#gameLoop(0, 0, snake_speed_0, 0, True, 'up')
