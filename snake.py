@@ -108,7 +108,26 @@ def message(msg, color):
     dis.blit(mesg, [dis_width / 3.5, dis_height / 4])
 
 
-def first_level(before_r_l, before_up_down, snake_speed, This_time, check_update, pos):
+def first_level(before_r_l, before_up_down, snake_speed, This_time, check_update, pos, new_game):
+    if new_game == True:
+        import sqlite3
+        connection_obj = sqlite3.connect('max_result.db')
+        # cursor object
+        cursor_obj = connection_obj.cursor()
+        # Drop the GEEK table if already exists.
+        cursor_obj.execute("DROP TABLE max_result;")
+        connection_obj.commit()
+        connection_obj.close()
+        # Имя файла базы данных
+        db_name = 'max_result.db'
+        # Создаем соединение с базой данных или создаем новую базу данных, если она не существует
+        conn = sqlite3.connect(db_name)
+        # Создаем курсор для выполнения SQL-запросов
+        cursor = conn.cursor()
+        # Создаем таблицу с одним столбцом 'results' типа INTEGER, если она не существует
+        cursor.execute('''CREATE TABLE IF NOT EXISTS max_result
+                              (results INTEGER)''')
+
     game_over = False
     game_close = False
 
@@ -172,7 +191,7 @@ def first_level(before_r_l, before_up_down, snake_speed, This_time, check_update
                     if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                         # Вызовите функцию on_mouse_button_down()
                         if button_rect_1.collidepoint(event.pos):
-                            first_level(0, 0, snake_speed_0, 0, True, 'up')
+                            first_level(0, 0, snake_speed_0, 0, True, 'up', False)
                         if button_rect_2.collidepoint(event.pos):
                             main()
                 # Проверьте, находится ли мышь над кнопкой.
@@ -374,7 +393,7 @@ def main():
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                 # Вызовите функцию on_mouse_button_down()
                 if button_rect.collidepoint(event.pos):
-                    first_level(0, 0, snake_speed_0, 0, True, 'up')
+                    first_level(0, 0, snake_speed_0, 0, True, 'up', True)
         # Проверьте, находится ли мышь над кнопкой.
         # Это создаст эффект наведения кнопки.
         if button_rect.collidepoint(pygame.mouse.get_pos()):
