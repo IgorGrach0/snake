@@ -392,6 +392,18 @@ def main():
     # Создайте объект pygame.Rect, который представляет границы кнопки
     button_rect_2 = pygame.Rect(330, 200, 350, 50)  # Отрегулируйте положение
 
+    # 3я кнопка:
+    # Создайте поверхность для кнопки
+    button_surface_3 = pygame.Surface((300, 50))
+    # Отображение текста на кнопке
+    text_3 = font_button.render("Уровень 2", True, (0, 0, 0))
+    text_rect_3 = text_3.get_rect(
+        center=(button_surface_3.get_width() / 2,
+                button_surface_3.get_height() / 2))
+
+    # Создайте объект pygame.Rect, который представляет границы кнопки
+    button_rect_3 = pygame.Rect(330, 275, 350, 50)  # Отрегулируйте положение
+
     while True:
         clock.tick(60)
         dis.fill(blue)
@@ -409,6 +421,8 @@ def main():
                     first_level(0, 0, snake_speed_0, 0, True, 'up', True)
                 if button_rect_2.collidepoint(event.pos):
                     first_level(0, 0, snake_speed_0, 0, True, 'up', False)
+                if button_rect_3.collidepoint(event.pos):
+                    Second_level(0, 0, snake_speed_0, 0, True, 'up')
 
 
         # Проверьте, находится ли мышь над кнопкой.
@@ -429,6 +443,14 @@ def main():
             pygame.draw.rect(button_surface_2, (0, 0, 0), (1, 1, 300, 1), 2)
             pygame.draw.rect(button_surface_2, (0, 100, 0), (1, 48, 300, 10), 2)
 
+        if button_rect_3.collidepoint(pygame.mouse.get_pos()):
+            pygame.draw.rect(button_surface_3, (127, 255, 212), (1, 1, 300, 48))
+        else:
+            pygame.draw.rect(button_surface_3, (0, 0, 0), (0, 0, 300, 50))
+            pygame.draw.rect(button_surface_3, (255, 255, 255), (1, 1, 300, 48))
+            pygame.draw.rect(button_surface_3, (0, 0, 0), (1, 1, 300, 1), 2)
+            pygame.draw.rect(button_surface_3, (0, 100, 0), (1, 48, 300, 10), 2)
+
         # Показать текст кнопки
         button_surface.blit(text, text_rect)
         # Нарисуйте кнопку на экране
@@ -438,6 +460,11 @@ def main():
         button_surface_2.blit(text_2, text_rect_2)
         # Нарисуйте кнопку на экране
         dis.blit(button_surface_2, (button_rect_2.x, button_rect_2.y))
+
+        # Показать текст кнопки
+        button_surface_3.blit(text_3, text_rect_3)
+        # Нарисуйте кнопку на экране
+        dis.blit(button_surface_3, (button_rect_3.x, button_rect_3.y))
 
         # Обновить состояние
         pygame.display.update()
@@ -468,17 +495,73 @@ def Second_level(before_r_l, before_up_down, snake_speed, This_time, check_updat
                 dis.blit(value, [300, 0])
                 pygame.display.update()
 
-            message("Game over! Press C-Play Again or Q-Quit", red)
+            message("Game over!", red)
             Your_score(Length_of_snake - 1)
-            pygame.display.update()
+            # Создайте поверхность для кнопки
+            button_surface_1 = pygame.Surface((300, 50))
+            # Отображение текста на кнопке
+            text_1 = font_button.render("Попробовать еще раз", True, (0, 0, 0))
+            text_rect_1 = text_1.get_rect(
+                center=(button_surface_1.get_width() / 2,
+                        button_surface_1.get_height() / 2))
 
-            for event in pygame.event.get():
-                if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_q:
-                        game_over = True
-                        game_close = False
-                    if event.key == pygame.K_c:
-                        Second_level(0, 0, 10, time.time(), True, 'up')
+            # Создайте объект pygame.Rect, который представляет границы кнопки
+            button_rect_1 = pygame.Rect(350, 320, 350, 50)  # Отрегулируйте положение
+
+            # 2я кнопка:
+            # Создайте поверхность для кнопки
+            button_surface_2 = pygame.Surface((300, 50))
+            # Отображение текста на кнопке
+            text_2 = font_button.render("Выйти в меню", True, (0, 0, 0))
+            text_rect_2 = text_2.get_rect(
+                center=(button_surface_2.get_width() / 2,
+                        button_surface_2.get_height() / 2))
+
+            # Создайте объект pygame.Rect, который представляет границы кнопки
+            button_rect_2 = pygame.Rect(350, 400, 350, 50)  # Отрегулируйте положение
+            while True:
+                clock.tick(60)
+                # Получаем события из очереди событий
+                for event in pygame.event.get():
+                    import sys
+                    # Проверьте событие выхода
+                    if event.type == pygame.QUIT:
+                        pygame.quit()
+                        sys.exit()
+                    # Проверяем событие нажатия кнопки мыши
+                    if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                        # Вызовите функцию on_mouse_button_down()
+                        if button_rect_1.collidepoint(event.pos):
+                            Second_level(0, 0, snake_speed_0, 0, True, 'up')
+                        if button_rect_2.collidepoint(event.pos):
+                            main()
+                # Проверьте, находится ли мышь над кнопкой.
+                # Это создаст эффект наведения кнопки.
+                if button_rect_1.collidepoint(pygame.mouse.get_pos()):
+                    pygame.draw.rect(button_surface_1, (127, 255, 212), (1, 1, 300, 48))
+                else:
+                    pygame.draw.rect(button_surface_1, (0, 0, 0), (0, 0, 300, 50))
+                    pygame.draw.rect(button_surface_1, light, (1, 1, 300, 48))
+                    pygame.draw.rect(button_surface_1, (0, 0, 0), (1, 1, 300, 1), 2)
+                    pygame.draw.rect(button_surface_1, (0, 100, 0), (1, 48, 300, 10), 2)
+
+                if button_rect_2.collidepoint(pygame.mouse.get_pos()):
+                    pygame.draw.rect(button_surface_2, (127, 255, 212), (1, 1, 300, 48))
+                else:
+                    pygame.draw.rect(button_surface_2, (0, 0, 0), (0, 0, 300, 50))
+                    pygame.draw.rect(button_surface_2, light, (1, 1, 300, 48))
+                    pygame.draw.rect(button_surface_2, (0, 0, 0), (1, 1, 300, 1), 2)
+                    pygame.draw.rect(button_surface_2, (0, 100, 0), (1, 48, 300, 10), 2)
+                # Показать текст кнопки
+                button_surface_1.blit(text_1, text_rect_1)
+                # Нарисуйте кнопку на экране
+                dis.blit(button_surface_1, (button_rect_1.x, button_rect_1.y))
+
+                # Показать текст кнопки
+                button_surface_2.blit(text_2, text_rect_2)
+                # Нарисуйте кнопку на экране
+                dis.blit(button_surface_2, (button_rect_2.x, button_rect_2.y))
+                pygame.display.update()
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
