@@ -7,7 +7,6 @@ connection = sqlite3.connect('Max_result_database.db')
 cursor = connection.cursor()
 
 pygame.init()
-lvl = 1
 
 white = (255, 255, 255)
 yellow = (255, 255, 102)
@@ -42,6 +41,8 @@ linux_logo = pygame.image.load('Linux_Logo.png')
 font_style = pygame.font.SysFont("bahnschrift", 25)
 score_font = pygame.font.SysFont("comicsansms", 32)
 font_button = pygame.font.SysFont(None, 32)
+
+enter_font = pygame.font.SysFont("comicsansms", 26)
 
 def record_max_result(Length_of_snake):
     import sqlite3
@@ -109,6 +110,7 @@ def message(msg, color):
 
 
 def first_level(before_r_l, before_up_down, snake_speed, This_time, check_update, pos, new_game):
+    lvl = 1
     if new_game == True:
         import sqlite3
         connection_obj = sqlite3.connect('max_result.db')
@@ -149,7 +151,7 @@ def first_level(before_r_l, before_up_down, snake_speed, This_time, check_update
                 record = record_max_result(Length_of_snake)
                 check_update = False
                 value = score_font.render("Your Record: " + str(record), True, yellow)
-                dis.blit(value, [300, 0])
+                dis.blit(value, [380, 50])
                 pygame.display.update()
 
             message("Game over!", red)
@@ -222,21 +224,13 @@ def first_level(before_r_l, before_up_down, snake_speed, This_time, check_update
                 dis.blit(button_surface_2, (button_rect_2.x, button_rect_2.y))
                 pygame.display.update()
 
-            pygame.display.update()
-
-            for event in pygame.event.get():
-                if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_q:
-                        game_over = True
-                        game_close = False
-                    if event.key == pygame.K_c:
-                        first_level(0, 0, 10, time.time(), True, 'up')
-
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 game_over = True
             if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_n and (Length_of_snake - 1) >= 5:
+                    Second_level(0, 0, snake_speed_0, 0, True, 'up')
                 if event.key == pygame.K_LEFT and before_r_l != 1 and time.time() - This_time >= 0.005:
                     pos = 'left'
                     before_up_down = 0
@@ -342,6 +336,9 @@ def first_level(before_r_l, before_up_down, snake_speed, This_time, check_update
 
         Your_score(Length_of_snake - 1)
         Your_level(lvl)
+        if (Length_of_snake - 1) >= 5:
+            value = enter_font.render("Click Enter and go next lelvel ", True, yellow)
+            dis.blit(value, [330, 3])
 
         list_foodx = []
         for i in range(100):
@@ -472,6 +469,8 @@ def main():
 def Second_level(before_r_l, before_up_down, snake_speed, This_time, check_update, pos):
     game_over = False
     game_close = False
+
+    lvl = 2
 
     x1 = dis_width / 2
     y1 = dis_height / 2
