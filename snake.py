@@ -105,7 +105,7 @@ def our_snake(snake_block, snake_list, position):
 
 def message(msg, color):
     mesg = score_font.render(msg, True, color)
-    dis.blit(mesg, [dis_width / 3.5, dis_height / 4])
+    dis.blit(mesg, [dis_width / 2.5, dis_height / 4])
 
 
 def first_level(before_r_l, before_up_down, snake_speed, This_time, check_update, pos, new_game):
@@ -379,6 +379,19 @@ def main():
 
     # Создайте объект pygame.Rect, который представляет границы кнопки
     button_rect = pygame.Rect(400, 125, 150, 50)  # Отрегулируйте положение
+
+    # 2я кнопка:
+    # Создайте поверхность для кнопки
+    button_surface_2 = pygame.Surface((300, 50))
+    # Отображение текста на кнопке
+    text_2 = font_button.render("Уровень 1", True, (0, 0, 0))
+    text_rect_2 = text_2.get_rect(
+        center=(button_surface_2.get_width() / 2,
+                button_surface_2.get_height() / 2))
+
+    # Создайте объект pygame.Rect, который представляет границы кнопки
+    button_rect_2 = pygame.Rect(330, 200, 350, 50)  # Отрегулируйте положение
+
     while True:
         clock.tick(60)
         dis.fill(blue)
@@ -394,6 +407,10 @@ def main():
                 # Вызовите функцию on_mouse_button_down()
                 if button_rect.collidepoint(event.pos):
                     first_level(0, 0, snake_speed_0, 0, True, 'up', True)
+                if button_rect_2.collidepoint(event.pos):
+                    first_level(0, 0, snake_speed_0, 0, True, 'up', False)
+
+
         # Проверьте, находится ли мышь над кнопкой.
         # Это создаст эффект наведения кнопки.
         if button_rect.collidepoint(pygame.mouse.get_pos()):
@@ -403,14 +420,29 @@ def main():
             pygame.draw.rect(button_surface, (255, 255, 255), (1, 1, 148, 48))
             pygame.draw.rect(button_surface, (0, 0, 0), (1, 1, 148, 1), 2)
             pygame.draw.rect(button_surface, (0, 100, 0), (1, 48, 148, 10), 2)
+
+        if button_rect_2.collidepoint(pygame.mouse.get_pos()):
+            pygame.draw.rect(button_surface_2, (127, 255, 212), (1, 1, 300, 48))
+        else:
+            pygame.draw.rect(button_surface_2, (0, 0, 0), (0, 0, 300, 50))
+            pygame.draw.rect(button_surface_2, (255, 255, 255), (1, 1, 300, 48))
+            pygame.draw.rect(button_surface_2, (0, 0, 0), (1, 1, 300, 1), 2)
+            pygame.draw.rect(button_surface_2, (0, 100, 0), (1, 48, 300, 10), 2)
+
         # Показать текст кнопки
         button_surface.blit(text, text_rect)
         # Нарисуйте кнопку на экране
         dis.blit(button_surface, (button_rect.x, button_rect.y))
+
+        # Показать текст кнопки
+        button_surface_2.blit(text_2, text_rect_2)
+        # Нарисуйте кнопку на экране
+        dis.blit(button_surface_2, (button_rect_2.x, button_rect_2.y))
+
         # Обновить состояние
         pygame.display.update()
 
-def gameLoop(before_r_l, before_up_down, snake_speed, This_time, check_update, pos):
+def Second_level(before_r_l, before_up_down, snake_speed, This_time, check_update, pos):
     game_over = False
     game_close = False
 
@@ -446,7 +478,7 @@ def gameLoop(before_r_l, before_up_down, snake_speed, This_time, check_update, p
                         game_over = True
                         game_close = False
                     if event.key == pygame.K_c:
-                        gameLoop(0, 0, 10, time.time(), True, 'up')
+                        Second_level(0, 0, 10, time.time(), True, 'up')
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -481,13 +513,13 @@ def gameLoop(before_r_l, before_up_down, snake_speed, This_time, check_update, p
                     before_r_l = 0
                     This_time = time.time()
 
-        if x1 >= dis_width+1:
+        if x1 > dis_width:
             x1 = 0
         elif x1 < 0:
             x1 = dis_width
         elif y1 < 0:
             y1 = dis_height
-        elif y1 >= dis_height+1:
+        elif y1 > dis_height:
             y1 = 0
 
         x1 += x1_change
