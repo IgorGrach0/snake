@@ -235,7 +235,7 @@ def first_level(before_r_l, before_up_down, snake_speed, This_time, check_update
             if event.type == pygame.QUIT:
                 game_over = True
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_n and (Length_of_snake - 1) >= 5:
+                if event.key == pygame.K_n and (Length_of_snake - 1) >= 25:
                     Second_level(0, 0, snake_speed_0, 0, True, 'up', score, reg)
                 if event.key == pygame.K_LEFT and before_r_l != 1 and time.time() - This_time >= 0.005:
                     pos = 'left'
@@ -630,7 +630,7 @@ def Second_level(before_r_l, before_up_down, snake_speed, This_time, check_updat
             if event.type == pygame.QUIT:
                 game_over = True
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_n and (Length_of_snake - 1) >= 5:
+                if event.key == pygame.K_n and (Length_of_snake - 1) >= 25:
                     third_level(0, 0, snake_speed_0, 0, True, 'up', score, reg)
                 if event.key == pygame.K_LEFT and before_r_l != 1 and time.time() - This_time >= 0.005:
                     pos = 'left'
@@ -890,7 +890,7 @@ def third_level(before_r_l, before_up_down, snake_speed, This_time, check_update
                             if reg == True:
                                 first_level(0, 0, snake_speed_0, 0, True, 'up', False, 0, True)
                             else:
-                                third_level(0, 0, snake_speed_0, 0, True, 'up', 0)
+                                third_level(0, 0, snake_speed_0, 0, True, 'up', 0, False)
                         if button_rect_2.collidepoint(event.pos):
                             main()
                 # Проверьте, находится ли мышь над кнопкой.
