@@ -112,7 +112,7 @@ def message(msg, color):
     dis.blit(mesg, [dis_width / 2.5, dis_height / 4])
 
 
-def first_level(before_r_l, before_up_down, snake_speed, This_time, check_update, pos, new_game, score):
+def first_level(before_r_l, before_up_down, snake_speed, This_time, check_update, pos, new_game, score, reg):
     lvl = 1
     if new_game == True:
         import sqlite3
@@ -158,7 +158,7 @@ def first_level(before_r_l, before_up_down, snake_speed, This_time, check_update
                 pygame.display.update()
 
             message("Game over!", red)
-            Your_score(Length_of_snake - 1)
+
 
 
             # Создайте поверхность для кнопки
@@ -196,7 +196,10 @@ def first_level(before_r_l, before_up_down, snake_speed, This_time, check_update
                     if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                         # Вызовите функцию on_mouse_button_down()
                         if button_rect_1.collidepoint(event.pos):
-                            first_level(0, 0, snake_speed_0, 0, True, 'up', False, 0)
+                            if reg == True:
+                                first_level(0, 0, snake_speed_0, 0, True, 'up', False, 0, True)
+                            else:
+                                first_level(0, 0, snake_speed_0, 0, True, 'up', False, 0, False)
                         if button_rect_2.collidepoint(event.pos):
                             main()
                 # Проверьте, находится ли мышь над кнопкой.
@@ -232,8 +235,8 @@ def first_level(before_r_l, before_up_down, snake_speed, This_time, check_update
             if event.type == pygame.QUIT:
                 game_over = True
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_n and (Length_of_snake - 1) >= 25:
-                    Second_level(0, 0, snake_speed_0, 0, True, 'up', score)
+                if event.key == pygame.K_n and (Length_of_snake - 1) >= 5:
+                    Second_level(0, 0, snake_speed_0, 0, True, 'up', score, reg)
                 if event.key == pygame.K_LEFT and before_r_l != 1 and time.time() - This_time >= 0.005:
                     pos = 'left'
                     before_up_down = 0
@@ -416,6 +419,18 @@ def main():
     # Создайте объект pygame.Rect, который представляет границы кнопки
     button_rect_4 = pygame.Rect(330, 350, 350, 50)  # Отрегулируйте положение
 
+    # 5я кнопка:
+    # Создайте поверхность для кнопки
+    button_surface_5 = pygame.Surface((350, 50))
+    # Отображение текста на кнопке
+    text_5 = font_button.render("Пройди меня, если сможешь", True, (0, 0, 0))
+    text_rect_5 = text_5.get_rect(
+        center=(button_surface_4.get_width() / 1.75,
+                button_surface_4.get_height() / 2))
+
+    # Создайте объект pygame.Rect, который представляет границы кнопки
+    button_rect_5 = pygame.Rect(310, 425, 400, 50)  # Отрегулируйте положение
+
     while True:
         clock.tick(60)
         dis.fill(blue)
@@ -430,13 +445,16 @@ def main():
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                 # Вызовите функцию on_mouse_button_down()
                 if button_rect.collidepoint(event.pos):
-                    first_level(0, 0, snake_speed_0, 0, True, 'up', True, 0)
+                    first_level(0, 0, snake_speed_0, 0, True, 'up', True, 0, False)
                 if button_rect_2.collidepoint(event.pos):
-                    first_level(0, 0, snake_speed_0, 0, True, 'up', False, 0)
+                    first_level(0, 0, snake_speed_0, 0, True, 'up', False, 0, False)
                 if button_rect_3.collidepoint(event.pos):
-                    Second_level(0, 0, snake_speed_0, 0, True, 'up', 0)
+                    Second_level(0, 0, snake_speed_0, 0, True, 'up', 0, False)
                 if button_rect_4.collidepoint(event.pos):
-                    third_level(0, 0, snake_speed_0, 0, True, 'up', 0)
+                    third_level(0, 0, snake_speed_0, 0, True, 'up', 0, False)
+
+                if button_rect_5.collidepoint(event.pos):
+                    first_level(0, 0, snake_speed_0, 0, True, 'up', False, 0, True)
 
 
         # Проверьте, находится ли мышь над кнопкой.
@@ -473,6 +491,14 @@ def main():
             pygame.draw.rect(button_surface_4, (0, 0, 0), (1, 1, 300, 1), 2)
             pygame.draw.rect(button_surface_4, (0, 100, 0), (1, 48, 300, 10), 2)
 
+        if button_rect_5.collidepoint(pygame.mouse.get_pos()):
+            pygame.draw.rect(button_surface_5, (127, 255, 212), (1, 1, 380, 48))
+        else:
+            pygame.draw.rect(button_surface_5, (0, 0, 0), (0, 0, 380, 50))
+            pygame.draw.rect(button_surface_5, (255, 255, 255), (1, 1, 380, 48))
+            pygame.draw.rect(button_surface_5, (0, 0, 0), (1, 1, 380, 1), 2)
+            pygame.draw.rect(button_surface_5, (0, 100, 0), (1, 48, 380, 10), 2)
+
         # Показать текст кнопки
         button_surface.blit(text, text_rect)
         # Нарисуйте кнопку на экране
@@ -493,10 +519,15 @@ def main():
         # Нарисуйте кнопку на экране
         dis.blit(button_surface_4, (button_rect_4.x, button_rect_4.y))
 
+        # Показать текст кнопки
+        button_surface_5.blit(text_5, text_rect_5)
+        # Нарисуйте кнопку на экране
+        dis.blit(button_surface_5, (button_rect_5.x, button_rect_5.y))
+
         # Обновить состояние
         pygame.display.update()
 
-def Second_level(before_r_l, before_up_down, snake_speed, This_time, check_update, pos, score):
+def Second_level(before_r_l, before_up_down, snake_speed, This_time, check_update, pos, score, reg):
     game_over = False
     game_close = False
 
@@ -525,7 +556,7 @@ def Second_level(before_r_l, before_up_down, snake_speed, This_time, check_updat
                 pygame.display.update()
 
             message("Game over!", red)
-            Your_score(Length_of_snake - 1)
+
             # Создайте поверхность для кнопки
             button_surface_1 = pygame.Surface((300, 50))
             # Отображение текста на кнопке
@@ -561,7 +592,10 @@ def Second_level(before_r_l, before_up_down, snake_speed, This_time, check_updat
                     if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                         # Вызовите функцию on_mouse_button_down()
                         if button_rect_1.collidepoint(event.pos):
-                            Second_level(0, 0, snake_speed_0, 0, True, 'up', 0)
+                            if reg == True:
+                                first_level(0, 0, snake_speed_0, 0, True, 'up', False, 0, True)
+                            else:
+                                Second_level(0, 0, snake_speed_0, 0, True, 'up', 0, False)
                         if button_rect_2.collidepoint(event.pos):
                             main()
                 # Проверьте, находится ли мышь над кнопкой.
@@ -597,7 +631,7 @@ def Second_level(before_r_l, before_up_down, snake_speed, This_time, check_updat
                 game_over = True
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_n and (Length_of_snake - 1) >= 5:
-                    third_level(0, 0, snake_speed_0, 0, True, 'up', score)
+                    third_level(0, 0, snake_speed_0, 0, True, 'up', score, reg)
                 if event.key == pygame.K_LEFT and before_r_l != 1 and time.time() - This_time >= 0.005:
                     pos = 'left'
                     before_up_down = 0
@@ -789,7 +823,7 @@ def Second_level(before_r_l, before_up_down, snake_speed, This_time, check_updat
         clock.tick(snake_speed)
     pygame.quit()
     quit()
-def third_level(before_r_l, before_up_down, snake_speed, This_time, check_update, pos, score):
+def third_level(before_r_l, before_up_down, snake_speed, This_time, check_update, pos, score, reg):
     game_over = False
     game_close = False
 
@@ -817,7 +851,7 @@ def third_level(before_r_l, before_up_down, snake_speed, This_time, check_update
                 pygame.display.update()
 
             message("Game over!", red)
-            Your_score(Length_of_snake - 1)
+
             # Создайте поверхность для кнопки
             button_surface_1 = pygame.Surface((300, 50))
             # Отображение текста на кнопке
@@ -853,7 +887,10 @@ def third_level(before_r_l, before_up_down, snake_speed, This_time, check_update
                     if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                         # Вызовите функцию on_mouse_button_down()
                         if button_rect_1.collidepoint(event.pos):
-                            third_level(0, 0, snake_speed_0, 0, True, 'up', 0)
+                            if reg == True:
+                                first_level(0, 0, snake_speed_0, 0, True, 'up', False, 0, True)
+                            else:
+                                third_level(0, 0, snake_speed_0, 0, True, 'up', 0)
                         if button_rect_2.collidepoint(event.pos):
                             main()
                 # Проверьте, находится ли мышь над кнопкой.
